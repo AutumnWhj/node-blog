@@ -16,7 +16,7 @@ const http = require('http')
 const server = http.createServer((req, res) => {
   console.log('method: ', req.method);
   console.log('content-type: ', req.headers['content-type']);
-
+  res.setHeader('Content-type', 'application/json ')
   let resultString = ''
   req.on('data', chunk => {
     resultString += chunk
