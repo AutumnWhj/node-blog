@@ -1,13 +1,16 @@
+const { exec } = require('../db/mysql');
+
 
 const getList = (author, keyword) => {
-  // 先返回假数据（格式是正确的）
-  return [{
-    id: 1,
-    title: '标题A',
-    content: '内容A',
-    createTime: new Date().getTime(),
-    author: '张三'
-  }]
+  let sql = `select * from blogs where 1=1 `
+  if (author) {
+    sql += `and author='${author}' `
+  }
+  if (keyword) {
+    sql += `and title like '%${keyword}%' `
+  }
+  sql += `order by createTime desc;`
+  return exec(sql)
 }
 
 const getDetail = (id) => {
