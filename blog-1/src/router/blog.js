@@ -31,12 +31,17 @@ const handleBlogRouter = (req, res) => {
   // 更新一篇博客
   if (method === 'POST' && req.path === '/api/blog/update') {
     const result = updateBlog(id, req.body)
-     return result ? new SuccessModel(data) : new ErrorModel('Update blog failed')
+     return result.then(val => {
+      return val ? new SuccessModel() : new ErrorModel('Update blog failed')
+     })
   }
   // 删除一篇博客
   if (method === 'POST' && req.path === '/api/blog/del') {
-    const result = delBlog(id)
-    return result ? new SuccessModel(data) : new ErrorModel('Delete blog failed')
+    const author = 'zhangsan' // Fake author
+    const result = delBlog(id, author)
+    return result.then(val => {
+      return val ? new SuccessModel() : new ErrorModel('Update blog failed')
+     })
   }
 }
 module.exports = handleBlogRouter
