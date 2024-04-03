@@ -1,6 +1,13 @@
 const { getList, getDetail, newBlog, updateBlog, delBlog } = require('../controller/blog')
 const { SuccessModel, ErrorModel  } = require('../model/resModel')
 
+// 登录验证
+const loginCheck = (req) => {
+  if (!req.session.username) {
+    return Promise.resolve(new ErrorModel('Not logged in'))
+  }
+}
+
 const handleBlogRouter = (req, res) => {
   const method = req.method
   const id = req.query.id
@@ -22,7 +29,11 @@ const handleBlogRouter = (req, res) => {
   }
   // 新建一篇博客
   if (method === 'POST' && req.path === '/api/blog/new') {
-    req.body.author = 'zhangsan' // Fake author
+    const loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
+    req.body.author = req.session.username
     const result = newBlog(req.body)
     return result.then(data => {
       return new SuccessModel(data)
@@ -37,10 +48,14 @@ const handleBlogRouter = (req, res) => {
   }
   // 删除一篇博客
   if (method === 'POST' && req.path === '/api/blog/del') {
-    const author = 'zhangsan' // Fake author
+    const loginCheckResult = loginCheck(req)
+    if (loginCheckResult) {
+      return loginCheckResult
+    }
+    req.body.author = req.session.username
     const result = delBlog(id, author)
     return result.then(val => {
-      return val ? new SuccessModel() : new ErrorModel('Update blog failed')
+      return val ? new SuccessModel() : new ErrorModel('Delete blog failed')
      })
   }
 }
