@@ -1,13 +1,32 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-// 用fetch 请求获取数据 GET http://localhost:3070/api/blog/list
-fetch('http://localhost:8081/api/blog/list')
+
+const login= () => {
+  fetch('/api/user/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: 'zhangsan',
+      password: '123'
+    })
+  })
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.error(error))
+}
 
-
-
+const getList = () => {
+  fetch('/api/blog/list?isadmin=1', {
+    method: 'GET',
+    credentials: 'include',
+    mode: "cors",
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error))
+}
 </script>
 
 <template>
@@ -19,7 +38,9 @@ fetch('http://localhost:8081/api/blog/list')
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <button type="button" @click="login">发起登录请求</button>
+  <button type="button" @click="getList">发起获取列表请求</button>
+  <!-- <HelloWorld msg="Vite + Vue" /> -->
 </template>
 
 <style scoped>

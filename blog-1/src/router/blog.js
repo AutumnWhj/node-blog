@@ -3,6 +3,7 @@ const { SuccessModel, ErrorModel  } = require('../model/resModel')
 
 // 登录验证
 const loginCheck = (req) => {
+  console.log('req.session.username: ', req.session.username);
   if (!req.session.username) {
     return Promise.resolve(new ErrorModel('Not logged in'))
   }
@@ -13,8 +14,17 @@ const handleBlogRouter = (req, res) => {
   const id = req.query.id
   // Get blog list
   if (method === 'GET' && req.path === '/api/blog/list') {
-    const author = req.query.author
+    let author = req.query.author
     const keyword = req.query.keyword
+    if(req.query.isadmin) {
+      const loginCheckResult = loginCheck(req)
+      if (loginCheckResult) {
+        return loginCheckResult
+      }
+      author = req.session.username
+    }
+
+
     const result = getList(author, keyword)
     return result.then(listData => {
       return new SuccessModel(listData)
