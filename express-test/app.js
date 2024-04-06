@@ -1,6 +1,6 @@
-const express = require('express'); 
+const LikeExpress = require('../lib/express/like-express'); 
 
-const app = express();
+const app = new LikeExpress();
 
 app.use((req, res, next) => {
   console.log('请求开始...', req.method, req.url);
