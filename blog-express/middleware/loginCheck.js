@@ -1,11 +1,11 @@
-import { ErrorModel } from '../model/resModel'
+const {  ErrorModel  } = require('../model/resModel')
 
 module.exports = (req, res, next) => {
-  if (!req.session.username) {
-    res.json(
-      new ErrorModel('Not logged in')
-    )
+  if (req.session.username) {
+    next()
     return
   }
-  next()
+  res.json(
+    new ErrorModel('Not logged in')
+  )
 }
