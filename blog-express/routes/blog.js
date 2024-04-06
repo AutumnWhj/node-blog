@@ -8,13 +8,15 @@ const { SuccessModel, ErrorModel  } = require('../model/resModel')
 router.get('/list', (req, res, next) => {
   let author = req.query.author
     const keyword = req.query.keyword
-    // if(req.query.isadmin) {
-    //   const loginCheckResult = loginCheck(req)
-    //   if (loginCheckResult) {
-    //     return loginCheckResult
-    //   }
-    //   author = req.session.username
-    // }
+    if(req.query.isadmin) {
+      if (!req.session.username) {
+        res.json(
+          new ErrorModel('Not logged in')
+        )
+        return 
+      }
+      author = req.session.username
+    }
 
     const result = getList(author, keyword)
     return result.then(listData => {
