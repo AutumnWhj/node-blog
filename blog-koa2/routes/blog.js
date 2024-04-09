@@ -1,9 +1,12 @@
 const router = require('koa-router')()
 
-router.prefix('/users')
+router.prefix('/api/blog')
 
-router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
+router.get('/list', async function (ctx, next) {
+  ctx.body = {
+    errno: 0,
+    data: [1, 2, 3]
+  }
 })
 
 router.get('/bar', function (ctx, next) {
