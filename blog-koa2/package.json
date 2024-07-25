@@ -21,9 +21,11 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "pug": "^2.0.3",
-    "redis": "3.1.2"
+    "redis": "3.1.2",
+    "xss": "^1.0.15"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
